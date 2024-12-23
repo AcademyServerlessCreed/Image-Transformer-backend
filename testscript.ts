@@ -4,7 +4,7 @@ import axios from "axios";
 
 // Configuration
 const API_ENDPOINT =
-  "https://lpznpk5wd3.execute-api.ap-south-1.amazonaws.com/prod";
+  "https://tiot1bxrt6.execute-api.ap-south-1.amazonaws.com/prod/";
 const TEST_IMAGE_PATH = path.join(__dirname, "test-image.jpg");
 
 async function convertImageToBase64(imagePath: string): Promise<string> {

@@ -10,7 +10,7 @@ const isValidImageType = (contentType: string): boolean => {
   return validTypes.includes(contentType);
 };
 
-// Helper function to validate file size (max 5MB)
+// Helper function to validate file size (max 5MB) (API Gateway limits the request size to 10MB)
 const isValidFileSize = (base64Data: string): boolean => {
   const sizeInBytes = Buffer.from(base64Data, "base64").length;
   const maxSize = 5 * 1024 * 1024; // 5MB

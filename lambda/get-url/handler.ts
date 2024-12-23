@@ -21,6 +21,7 @@ export const handler = async (
 
   try {
     const params = event.queryStringParameters;
+    console.log("Key:", params?.key);
     if (!params?.key) {
       return {
         statusCode: 400,
@@ -32,18 +33,22 @@ export const handler = async (
     }
 
     // Now TypeScript knows params.key exists
-    const { key, width, height } = params;
+    const { key } = params;
 
-    // Construct the key for resized image
-    let imageKey = key;
-    if (width && height) {
-      imageKey = `${width}x${height}/${key}`;
-    }
+    // key with 200x200
+    const key1 = `200x200/${key}`;
+    // key with 800x600
+    const key2 = `800x600/${key}`;
 
     // Generate pre-signed URL
-    const url = s3.getSignedUrl("getObject", {
+    const url1 = s3.getSignedUrl("getObject", {
       Bucket: process.env.RESIZED_BUCKET,
-      Key: imageKey,
+      Key: key1,
+      Expires: EXPIRATION,
+    });
+    const url2 = s3.getSignedUrl("getObject", {
+      Bucket: process.env.RESIZED_BUCKET,
+      Key: key2,
       Expires: EXPIRATION,
     });
 
@@ -51,7 +56,8 @@ export const handler = async (
       statusCode: 200,
       headers,
       body: JSON.stringify({
-        url,
+        url1,
+        url2,
         expiresIn: EXPIRATION,
       }),
     };
